@@ -33,8 +33,8 @@ services:
     name: vector-db-frontend
     runtime: static
     rootDir: client
-    # Build frontend, then ping backend to wake it up
-    buildCommand: npm install && npm run build && curl -s https://vector-db-api.onrender.com/api/health || true
+    # Build frontend, then ping backend to wake it up (5s timeout, don't wait for response)
+    buildCommand: npm install && npm run build && (curl -s --max-time 5 https://vector-db-api.onrender.com/api/health &) || true
     staticPublishPath: dist
     envVars:
       # This gets replaced at build time

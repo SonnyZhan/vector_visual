@@ -443,20 +443,13 @@ allowed_origins = [
 # Add production frontend URL if configured
 if frontend_url:
     allowed_origins.append(frontend_url)
-    # Also allow the www version if applicable
-    if frontend_url.startswith("https://"):
-        allowed_origins.append(frontend_url.replace("https://", "https://www."))
 
-# For Render.com deployments - allow .onrender.com subdomains
-allowed_origins.extend([
-    "https://vector-db-frontend.onrender.com",
-    "https://vector-db.onrender.com",
-])
-
+# For simplicity, allow ALL origins in this demo app
+# In production, you'd want to be more restrictive
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
+    allow_origins=["*"],  # Allow all origins for demo
+    allow_credentials=False,  # Must be False when using "*"
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
 )

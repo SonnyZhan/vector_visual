@@ -1,0 +1,48 @@
+# =============================================================================
+# Render Blueprint - Deploys both backend and frontend
+# =============================================================================
+# This file tells Render how to deploy your services.
+# Push to GitHub, then connect your repo to Render.
+# Render will auto-detect this file and deploy both services.
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # FastAPI Backend
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: vector-db-api
+    runtime: python
+    region: oregon  # Free tier available in oregon
+    plan: free
+    rootDir: server
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      # Add your frontend URL here after deploying the static site
+      - key: FRONTEND_URL
+        value: https://vector-db-frontend.onrender.com
+    healthCheckPath: /api/health
+
+  # ---------------------------------------------------------------------------
+  # React Frontend (Static Site)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: vector-db-frontend
+    runtime: static
+    region: oregon
+    plan: free
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      # This gets replaced at build time
+      - key: VITE_API_URL
+        value: https://vector-db-api.onrender.com
+    routes:
+      # SPA fallback - all routes serve index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html

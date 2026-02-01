@@ -1,0 +1,25 @@
+# =============================================================================
+# Vector DB Visualizer - Python Dependencies
+# =============================================================================
+# Install with: pip install -r requirements.txt
+# =============================================================================
+
+# FastAPI - Modern web framework for building APIs
+# Handles routing, request validation, OpenAPI docs, etc.
+fastapi==0.109.2
+
+# Uvicorn - ASGI server to run FastAPI
+# "standard" includes useful extras like watchfiles for auto-reload
+uvicorn[standard]==0.27.1
+
+# Pydantic - Data validation using Python type hints
+# FastAPI uses this internally for request/response validation
+pydantic==2.6.1
+
+# NumPy - Numerical computing library
+# Used for vector operations (arrays, dot products, norms)
+numpy==1.26.4
+
+# scikit-learn - Machine learning library
+# We only use PCA (Principal Component Analysis) for dimensionality reduction
+scikit-learn==1.4.0
